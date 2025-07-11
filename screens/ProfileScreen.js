@@ -227,7 +227,7 @@ const ProfileScreen = ({ navigation }) => {
                 style={[styles.box, { width: boxWidth }]}
                 onPress={confirmSignOut}
               >
-                <FontAwesomeIcon icon={faArrowRightFromBracket} size={iconSize} color="#8c52ff" />
+                <FontAwesomeIcon icon={faArrowRightFromBracket} size={iconSize} color="#5e17eb" />
                 <Text style={styles.title}>Cerrar sesión</Text>
               </TouchableOpacity>
             )}
@@ -242,7 +242,7 @@ const ProfileScreen = ({ navigation }) => {
 
     <View style={styles.containerLogo}>
       <Text style={styles.textLogo}>
-        now<Text style={styles.letterBLogo}>b</Text>ox
+        small<Text style={styles.letterBLogo}>T</Text>alk
       </Text>
     </View>
 
@@ -317,7 +317,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold', // Negrita aplicada al texto completo
   },
   letterBLogo: {
-    color: '#8c52ff',
+    color: '#5e17eb',
   },
 });
 

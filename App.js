@@ -9,6 +9,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import TabNavigation from "./navigations/TabNavigation";
 import "react-native-gesture-handler";
 import { GestureHandlerRootView } from "react-native-gesture-handler"; 
+import './i18n'; // Importa la configuración
 
 const Stack = createNativeStackNavigator();
 

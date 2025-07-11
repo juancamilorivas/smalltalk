@@ -1,13 +1,16 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faWarehouse } from "@fortawesome/free-solid-svg-icons/faWarehouse";
 import { faBolt } from "@fortawesome/free-solid-svg-icons/faBolt";
 import { faBars } from "@fortawesome/free-solid-svg-icons/faBars";
+import { faComment } from "@fortawesome/free-solid-svg-icons/faComment";
+import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
+
 import { useSafeAreaInsets } from "react-native-safe-area-context"; 
 import ProfileNavigation from "./ProfileNavigation";
 import ServicesNavigation from "./ServicesNavigation";
 import ServiceHistoryNavigation from "./ServiceHistoryNavigation";
+import ChatNavigation from "./ChatNavigation";
 
 const Tab = createBottomTabNavigator();
 
@@ -26,24 +29,26 @@ const TabNavigation = () => {
         },
         tabBarIcon: ({ focused, color }) => {
           let icon;
-          if (route.name === "Bodega") {
+          if (route.name === "Search") {
             icon = (
-              <FontAwesomeIcon icon={faWarehouse} size={30} color={color} />
+              <FontAwesomeIcon icon={faUser} size={30} color={color} />
             );
-          } else if (route.name === "Servicios") {
+          } else if (route.name === "Services") {
             icon = <FontAwesomeIcon icon={faBolt} size={30} color={color} />;
-          } else if (route.name === "Opciones") {
+          } else if (route.name === "Options") {
             icon = <FontAwesomeIcon icon={faBars} size={30} color={color} />;
+          } else if (route.name === "Chats") {
+            icon = <FontAwesomeIcon icon={faComment} size={30} color={color} />;
           }
 
           return icon;
         },
-        tabBarActiveTintColor: "#8c52ff",
+        tabBarActiveTintColor: "#5e17eb",
         tabBarInactiveTintColor: "gray",
       })}
     >
       <Tab.Screen
-        name="Bodega"
+        name="Search"
         component={ServicesNavigation}
         options={{
           headerShown: false,
@@ -51,8 +56,19 @@ const TabNavigation = () => {
         }}
       />
 
+
+<Tab.Screen
+        name="Chats"
+        component={ChatNavigation}
+        options={{
+          headerShown: false,
+          tabBarHideOnKeyboard: true,
+        }}
+      />
+
+
       <Tab.Screen
-        name="Servicios"
+        name="Services"
         component={ServiceHistoryNavigation}
         options={{
           headerShown: false,
@@ -61,7 +77,7 @@ const TabNavigation = () => {
       />
 
       <Tab.Screen
-        name="Opciones"
+        name="Options"
         component={ProfileNavigation}
         options={{
           headerShown: false,
@@ -69,6 +85,9 @@ const TabNavigation = () => {
         }}
       />
     </Tab.Navigator>
+
+
+
   );
 };
 

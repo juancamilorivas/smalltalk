@@ -12,7 +12,21 @@
       "distribution": "internal"
     },
     "production": {
-      "autoIncrement": true
+      "autoIncrement": true,
+      "channel": "production",
+      "env": {
+        "API_URL": "https://production.example.com",
+        "API_KEY": "prod_abc123",
+        "API_MIPAQUETE": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZDMwODhlMzRkYWJkMjVlZTRlM2U2NjQiLCJuYW1lIjoiVGVzdC1taS1wYXF1ZXRlLXJlYWwiLCJzdXJuYW1lIjoiSnVuaW9yIiwiZW1haWwiOiJ0ZXN0QGdtYWlsLmNvbSIsImNlbGxQaG9uZSI6IjMxNDY1NzEyMzMiLCJjcmVhdGVkQXQiOiIyMDE5LTA3LTE4VDE0OjU3OjM5LjA0NFoiLCJkYXRlIjoiMjAyNC0wNy0wNCAyMTo1OTowMyIsImlhdCI6MTcyMDE0ODM0M30.sZ9V1VDzgn_409Z6tU9IyW-uamMI_0tcol7L0F3siXE",
+        "API_STRIPE_PUBLISHABLE": "pk_test_51JmPS8GALVCY5K55NevtjIZQTNsBbopWyplDUf9ll3JDxsiSF8puo6aYtS9FndKcvpEPC7rxaf9Yyv220NtU1BfO00wF9cQenJ",
+        "FIREBASE_API_KEY": "AIzaSyDDS9BNR9qziCdGBkaknHmTGd614uMgR-I",
+        "FIREBASE_AUTH_DOMAIN": "smalltalk-29589.firebaseapp.com",
+        "FIREBASE_PROJECT_ID": "smalltalk-29589",
+        "FIREBASE_STORAGE_BUCKET": "smalltalk-29589.firebasestorage.app",
+        "FIREBASE_MESSAGING_SENDER_ID": "810558368594",
+        "FIREBASE_APP_ID": "1:810558368594:web:7d06bc3af0a8ca4e8b688b",
+        "FIREBASE_MEASUREMENT_ID": "G-WWBXCXLYXQ"
+      }
     }
   },
   "submit": {

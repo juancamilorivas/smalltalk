@@ -1,12 +1,3 @@
-
-
-
-
-
-
-
-
-
 // import React, { useState } from "react";
 // import {
 //   Text,
@@ -29,12 +20,11 @@
 // import { doc, setDoc } from "firebase/firestore";
 // import { StatusBar } from "react-native";
 // import Toast from 'react-native-toast-message';
-
+// import { Dropdown } from 'react-native-element-dropdown';
+// import AntDesign from '@expo/vector-icons/AntDesign';
 
 // const CreateScreen = ({ navigation }) => {
-//   const MAX_RETRIES = 3;
-//   let retries = 0;
-
+ 
 //   // STATES
 //   const [email, setEmail] = useState("");
 //   const [nombre, setNombre] = useState("");
@@ -43,482 +33,44 @@
 //   const [celular, setCelular] = useState("");
 //   const [password, setPassword] = useState("");
 //   const [isLoading, setIsLoading] = React.useState(false);
-
-//   // CONSTS
-//   const dispatch = useDispatch();
-//   const lowerCaseEmail = email.toLowerCase();
-
-//   // Mostrar toast de error
-//   const showErrorToast = (message) => {
-//     Toast.show({
-//       type: 'error',
-//       text1: 'Error',
-//       text2: message,
-//       position: 'bottom',
-//     });
-//   };
-
-//   // Mostrar toast de éxito
-//   const showSuccessToast = (message) => {
-//     Toast.show({
-//       type: 'success',
-//       text1: 'Éxito',
-//       text2: message,
-//       position: 'bottom',
-//     });
-//   };
-
-//   // Función para validar y actualizar cédula (solo números)
-//   const handleCedulaChange = (text) => {
-//     const cleanedText = text.replace(/[^0-9]/g, "");
-//     setCedula(cleanedText);
-//   };
-
-//   // Función para validar y actualizar celular (solo números)
-//   const handleCelularChange = (text) => {
-//     const cleanedText = text.replace(/[^0-9]/g, "");
-//     setCelular(cleanedText);
-//   };
-
-//   // GUARDAR EN EL STORAGE
-//   const storeData = async (id, userData) => {
-//     try {
-//       await AsyncStorage.setItem("key", id);
-//       const jsonData = JSON.stringify(userData);
-//       await AsyncStorage.setItem("userData", jsonData);
-//     } catch (error) {
-//       if (__DEV__) {
-//         console.error("Error async storage: ", error);
-//       }
-//       showErrorToast("Error al guardar los datos locales");
-//     }
-//   };
-
-
-//   // CREATE STRIPE CUSTOMER
-//   const handleSubmit = async ({ name, email, userCredential }) => {
-//     try {
-//       const response = await fetch(
-//         "https://app-zrcl5qd7da-uc.a.run.app/api/createstripecustomer",
-//         {
-//           method: "POST",
-//           headers: {
-//             "Content-Type": "application/json",
-//           },
-//           body: JSON.stringify({ name, email }),
-//         }
-//       );
-
-//       if (response.ok) {
-//         const customer = await response.json();
-//         const userData = {
-//           email: userCredential.user.email,
-//           createdAt: new Date(),
-//           name: nombre,
-//           surname: apellidos,
-//           country: "Colombia",
-//           nit: cedula,
-//           cellPhone: celular,
-//           stripeCustomerId: customer.id,
-//           destinationAddress: "",
-//           destinyDaneCode: "",
-//           locationName: "",
-//           departamento: "",
-//           prefix: "+057",
-//           nitType: "CC", 
-//         };
-//         const uid = userCredential.user.uid;
-//         await storeData(uid, userData);
-
-//         try {
-//           const userDocRef = doc(db, "users", uid);
-//           await setDoc(userDocRef, userData);
-//           showSuccessToast("Cuenta creada exitosamente");
-//           navigation.navigate("TabsNavigation");
-//         } catch (error) {
-//           if (__DEV__) {
-//             console.error("Error guardando user: ", error);
-//           }
-//           await initialAuth.currentUser?.delete();
-//           showErrorToast("Error al crear la cuenta. Intente nuevamente.");
-//         }
-//       } else {
-//         const errorData = await response.json();
-//         if (__DEV__) {
-//           console.error(errorData.message);
-//         }
-//         await initialAuth.currentUser?.delete();
-//         showErrorToast("Error al crear el cliente de pago");
-//       }
-//     } catch (error) {
-//       if (__DEV__) {
-//         console.error("Error con crear user stripe: ", error);
-//       }
-//       if (initialAuth.currentUser) {
-//         await initialAuth.currentUser.delete();
-//       }
-//       showErrorToast("Error al completar el registro");
-//     }
-//   };
-
-//   // CREATE ACCOUNT
-//   const handleCreateAccount = async () => {
-//     try {
-//       const userCredential = await createUserWithEmailAndPassword(
-//         initialAuth,
-//         email,
-//         password
-//       );
-
-//       dispatch(
-//         setUser({
-//           authentication: true,
-//           email: userCredential.user.email,
-//           accessToken: userCredential.user.accessToken,
-//           uid: userCredential.user.uid,
-//         })
-//       );
-      
-//       await handleSubmit({
-//         name: nombre,
-//         email: email,
-//         userCredential: userCredential,
-//       });
-//     } catch (error) {
-//       setIsLoading(false);
-//       if (__DEV__) {
-//         console.error("Error creando user: ", error);
-//       }
-      
-//       let errorMessage = "Error al crear la cuenta";
-//       switch (error.code) {
-//         case 'auth/email-already-in-use':
-//           errorMessage = "El correo electrónico ya está en uso";
-//           break;
-//         case 'auth/invalid-email':
-//           errorMessage = "El correo electrónico no es válido";
-//           break;
-//         case 'auth/weak-password':
-//           errorMessage = "La contraseña es demasiado débil";
-//           break;
-//         default:
-//           errorMessage = "Error al crear la cuenta";
-//       }
-      
-//       showErrorToast(errorMessage);
-//     }
-//   };
-
-//   return (
-//     <SafeAreaView style={styles.container}>
-//       <StatusBar barStyle="light-content" backgroundColor="#000000" />
-
-//       <TouchableOpacity onPress={() => navigation.goBack()}>
-//         <FontAwesomeIcon icon={faX} size={25} style={styles.iconArrowLeft} />
-//       </TouchableOpacity>
-
-//       <ScrollView
-//         contentContainerStyle={{
-//           width: "100%",
-//           alignItems: "center",
-//           justifyContent: "start",
-//           marginTop: 10,
-//         }}
-//       >
-//         <View style={styles.login}>
-//           <View>
-//             <TextInput
-//               onChangeText={(text) => setNombre(text.trim())}
-//               style={styles.input}
-//               placeholder="Nombre"
-//               placeholderTextColor="#373737"
-//             />
-//           </View>
-//           <View>
-//             <TextInput
-//               onChangeText={(text) => setApellidos(text.trim())}
-//               style={styles.input}
-//               placeholder="Apellidos"
-//               placeholderTextColor="#373737"
-//             />
-//           </View>
-//           <View>
-//             <TextInput
-//               onChangeText={handleCedulaChange} 
-//               value={cedula}
-//               style={styles.input}
-//               placeholder="Cédula"
-//               placeholderTextColor="#373737"
-//               keyboardType="numeric"
-//               maxLength={10}
-//             />
-//           </View>
-//           <View>
-//             <TextInput
-//               style={styles.input}
-//               placeholder="+057"
-//               value={"+057"}
-//               placeholderTextColor="#373737"
-//               editable={false}
-//             />
-//           </View>
-//           <View>
-//             <TextInput
-//               onChangeText={handleCelularChange}
-//               value={celular}
-//               style={styles.input}
-//               placeholder="Número celular"
-//               placeholderTextColor="#373737"
-//               keyboardType="phone-pad"
-//               maxLength={10}
-//             />
-//           </View>
-
-//           <View>
-//             <TextInput
-//               onChangeText={(text) => setEmail(text.trim().toLowerCase())}
-//               value={email}
-//               style={styles.input}
-//               placeholder="personal@correo.com"
-//               placeholderTextColor="#373737"
-//             />
-//           </View>
-//           <View>
-//             <TextInput
-//               onChangeText={(text) => setPassword(text)}
-//               style={styles.input}
-//               placeholder="Contraseña"
-//               placeholderTextColor="#373737"
-//               secureTextEntry={true}
-//             />
-//           </View>
-
-//           <TouchableOpacity
-//             style={[styles.button, { backgroundColor: "#EE6B6B" }]}
-//             onPress={handleCreateAccount}
-//             disabled={isLoading}
-//           >
-//             {isLoading ? (
-//               <ActivityIndicator size="large" color="#fff" />
-//             ) : (
-//               <Text
-//                 style={{ fontSize: 17, fontWeight: "400", color: "#ffffff" }}
-//               >
-//                 Crear cuenta
-//               </Text>
-//             )}
-//           </TouchableOpacity>
-//         </View>
-//       </ScrollView>
-//       <Toast />
-//     </SafeAreaView>
-//   );
-// };
-
-// // STYLES
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "#fff",
-//     justifyContent: "start",
-//     backgroundColor: "#000000",
-//   },
-//   image: {
-//     width: "100%",
-//     height: "100%",
-//     resizeMode: "cover",
-//   },
-//   login: {
-//     borderColor: "gray",
-//     borderRadius: 10,
-//     alignItems: "center",
-//     marginBottom: 30,
-//   },
-//   logo: {
-//     width: 100,
-//     height: 100,
-//     borderRadius: 50,
-//     borderColor: "#fff",
-//     borderWidth: 2,
-//     marginVertical: 30,
-//   },
-//   input: {
-//     width: 290,
-//     height: 50,
-//     borderColor: "gray",
-//     borderWidth: 2,
-//     borderWidth: 2,
-//     borderRadius: 10,
-//     padding: 10,
-//     marginVertical: 10,
-//     backgroundColor: "#000000",
-//     marginBottom: 20,
-//     color: "white",
-//     fontSize: 18,
-//   },
-//   button: {
-//     width: 270,
-//     height: 50,
-//     borderRadius: 10,
-//     alignItems: "center",
-//     justifyContent: "center",
-//     marginVertical: 10,
-//     borderColor: "#fff",
-//     borderWidth: 1,
-//   },
-//   iconArrowLeft: {
-//     color: "#ffffff",
-//     marginTop: 30,
-//     marginLeft: 30,
-//     marginBottom: 10,
-//   },
-// });
-
-// export default CreateScreen;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React, { useState, useEffect } from "react";
-// import {
-//   Text,
-//   StyleSheet,
-//   View,
-//   TouchableOpacity,
-//   TextInput,
-//   ScrollView,
-//   ActivityIndicator,
-//   SafeAreaView,
-// } from "react-native";
-// import { createUserWithEmailAndPassword } from "firebase/auth";
-// import { faX } from "@fortawesome/free-solid-svg-icons/faX";
-// import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-// import { initialAuth } from "../firebase";
-// import { useDispatch } from "react-redux";
-// import { setUser } from "../reducers/user/userSlice";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
-// import { db } from "../firebase";
-// import { doc, setDoc } from "firebase/firestore";
-// import { StatusBar } from "react-native";
-// import Toast from 'react-native-toast-message';
-// import { Dropdown } from "react-native-element-dropdown";
-// import { AntDesign } from '@expo/vector-icons';
-
-// const CreateScreen = ({ navigation }) => {
-//   const MAX_RETRIES = 3;
-//   let retries = 0;
-
-//   // STATES
-//   const [email, setEmail] = useState("");
-//   const [nombre, setNombre] = useState("");
-//   const [apellidos, setApellidos] = useState("");
-//   const [cedula, setCedula] = useState("");
-//   const [celular, setCelular] = useState("");
-//   const [password, setPassword] = useState("");
-//   const [isLoading, setIsLoading] = React.useState(false);
-//   const [countryCodes, setCountryCodes] = useState([]);
 //   const [selectedCountry, setSelectedCountry] = useState(null);
 //   const [isFocus, setIsFocus] = useState(false);
+//   const [countryCodes, setCountryCodes] = useState([]);
 
 //   // CONSTS
 //   const dispatch = useDispatch();
-//   const lowerCaseEmail = email.toLowerCase();
 
-
-
-
-
-
-//   // Obtener códigos de países al cargar el componente
-//   useEffect(() => {
+//   React.useEffect(() => {
 //     const fetchCountryCodes = async () => {
 //       try {
-//         const response = await fetch('https://restcountries.com/v3.1/all');
-//         const data = await response.json();
+//         // Campos específicos: name (common), idd (root + suffixes)
+//         const response = await fetch('https://restcountries.com/v3.1/all?fields=name,idd');
+//         const countries = await response.json();
         
-//         const formattedCodes = data
-//           .filter(country => country.idd?.root && country.idd?.suffixes)
+//         const formattedCountries = countries
+//           // Filtra países con idd.root y al menos un suffix
+//           .filter(country => country.idd?.root && country.idd?.suffixes?.length > 0)
 //           .map(country => ({
 //             label: `${country.name.common} (${country.idd.root}${country.idd.suffixes[0]})`,
 //             value: `${country.idd.root}${country.idd.suffixes[0]}`,
 //             countryName: country.name.common
 //           }))
 //           .sort((a, b) => a.countryName.localeCompare(b.countryName));
-
-//         setCountryCodes(formattedCodes);
         
-//         // Establecer Colombia como valor por defecto
-//         const colombia = formattedCodes.find(code => code.countryName === "Colombia");
-//         if (colombia) {
-//           setSelectedCountry(colombia.value);
-//         }
+//         setCountryCodes(formattedCountries);
 //       } catch (error) {
-//         console.error("Error fetching country codes:", error);
-//         // Si falla la API, usar datos por defecto
+//         console.error("Error fetching countries:", error);
+//         // Datos de respaldo
 //         setCountryCodes([
 //           { label: "Colombia (+57)", value: "+57", countryName: "Colombia" },
-//           { label: "México (+52)", value: "+52", countryName: "México" },
-//           { label: "Argentina (+54)", value: "+54", countryName: "Argentina" },
-//           // Puedes agregar más países aquí como respaldo
+//           { label: "Estados Unidos (+1)", value: "+1", countryName: "United States" },
+//           { label: "México (+52)", value: "+52", countryName: "Mexico" },
 //         ]);
-//         setSelectedCountry("+57");
 //       }
 //     };
-
+  
 //     fetchCountryCodes();
 //   }, []);
-
-
-
-
-
-
 
 //   // Mostrar toast de error
 //   const showErrorToast = (message) => {
@@ -582,12 +134,13 @@
 
 //       if (response.ok) {
 //         const customer = await response.json();
+//         const selectedCountryData = countryCodes.find(country => country.value === selectedCountry);
 //         const userData = {
 //           email: userCredential.user.email,
 //           createdAt: new Date(),
 //           name: nombre,
 //           surname: apellidos,
-//           country: "Colombia",
+//           country: selectedCountryData?.countryName || "Colombia",
 //           nit: cedula,
 //           cellPhone: celular,
 //           stripeCustomerId: customer.id,
@@ -595,7 +148,7 @@
 //           destinyDaneCode: "",
 //           locationName: "",
 //           departamento: "",
-//           prefix: selectedCountry || "+57", // Usar el código seleccionado o +57 por defecto
+//           prefix: selectedCountry || "+057",
 //           nitType: "CC", 
 //         };
 //         const uid = userCredential.user.uid;
@@ -682,126 +235,115 @@
 
 //   return (
 //     <SafeAreaView style={styles.container}>
-//       <StatusBar barStyle="light-content" backgroundColor="#000000" />
+//       <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
 
-//       <TouchableOpacity onPress={() => navigation.goBack()}>
-//         <FontAwesomeIcon icon={faX} size={25} style={styles.iconArrowLeft} />
+//       <TouchableOpacity 
+//         onPress={() => navigation.goBack()}
+//         style={styles.backButton}
+//       >
+//         <FontAwesomeIcon icon={faX} size={20} style={styles.iconArrowLeft} />
 //       </TouchableOpacity>
 
 //       <ScrollView
-//         contentContainerStyle={{
-//           width: "100%",
-//           alignItems: "center",
-//           justifyContent: "start",
-//           marginTop: 10,
-//         }}
+//         contentContainerStyle={styles.scrollContainer}
+//         keyboardShouldPersistTaps="handled"
 //       >
-//         <View style={styles.login}>
-//           <View>
-//             <TextInput
-//               onChangeText={(text) => setNombre(text.trim())}
-//               style={styles.input}
-//               placeholder="Nombre"
-//               placeholderTextColor="#373737"
-//             />
-//           </View>
-//           <View>
-//             <TextInput
-//               onChangeText={(text) => setApellidos(text.trim())}
-//               style={styles.input}
-//               placeholder="Apellidos"
-//               placeholderTextColor="#373737"
-//             />
-//           </View>
-//           <View>
-//             <TextInput
-//               onChangeText={handleCedulaChange}
-//               value={cedula}
-//               style={styles.input}
-//               placeholder="Cédula"
-//               placeholderTextColor="#373737"
-//               keyboardType="numeric"
-//               maxLength={10}
+//         <View style={styles.formContainer}>
+//           <Text style={styles.title}>Crear cuenta</Text>
+          
+//           <TextInput
+//             onChangeText={(text) => setNombre(text.trim())}
+//             style={styles.input}
+//             placeholder="Nombre"
+//             placeholderTextColor="#999"
+//           />
+          
+//           <TextInput
+//             onChangeText={(text) => setApellidos(text.trim())}
+//             style={styles.input}
+//             placeholder="Apellidos"
+//             placeholderTextColor="#999"
+//           />
+          
+//           <TextInput
+//             onChangeText={handleCedulaChange} 
+//             value={cedula}
+//             style={styles.input}
+//             placeholder="Cédula"
+//             placeholderTextColor="#999"
+//             keyboardType="numeric"
+//             maxLength={10}
+//           />
+          
+//           <View style={styles.dropdownContainer}>
+//             <Dropdown
+//               style={[styles.dropdown, isFocus && { borderColor: "#000" }]}
+//               placeholderStyle={styles.placeholderStyle}
+//               selectedTextStyle={styles.selectedTextStyle}
+//               inputSearchStyle={styles.inputSearchStyle}
+//               iconStyle={styles.iconStyle}
+//               data={countryCodes}
+//               search
+//               maxHeight={250}
+//               labelField="label"
+//               valueField="value"
+//               placeholder={!isFocus ? "Selecciona tu código" : "..."}
+//               searchPlaceholder="Buscar país..."
+//               value={selectedCountry}
+//               onFocus={() => setIsFocus(true)}
+//               onBlur={() => setIsFocus(false)}
+//               onChange={(item) => {
+//                 setSelectedCountry(item.value);
+//                 setIsFocus(false);
+//               }}
+//               renderLeftIcon={() => (
+//                 <AntDesign
+//                   style={styles.icon}
+//                   color={isFocus ? "#000" : "#999"}
+//                   name="earth"
+//                   size={20}
+//                 />
+//               )}
 //             />
 //           </View>
           
-//           {/* Dropdown para seleccionar código de país */}
-//           <View>
-//             <View style={styles.containerDropDown}>
-//               <Dropdown
-//                 style={[styles.dropdown, isFocus && { borderColor: "gray" }]}
-//                 placeholderStyle={styles.placeholderStyle}
-//                 selectedTextStyle={styles.selectedTextStyle}
-//                 inputSearchStyle={styles.inputSearchStyle}
-//                 iconStyle={styles.iconStyle}
-//                 data={countryCodes}
-//                 search
-//                 maxHeight={250}
-//                 labelField="label"
-//                 valueField="value"
-//                 placeholder={!isFocus ? "Selecciona tu país" : "..."}
-//                 searchPlaceholder="Buscar país..."
-//                 value={selectedCountry}
-//                 onFocus={() => setIsFocus(true)}
-//                 onBlur={() => setIsFocus(false)}
-//                 onChange={(item) => {
-//                   setSelectedCountry(item.value);
-//                   setIsFocus(false);
-//                 }}
-//                 renderLeftIcon={() => (
-//                   <AntDesign
-//                     style={styles.icon}
-//                     color={isFocus ? "gray" : "white"}
-//                     name="earth"
-//                     size={20}
-//                   />
-//                 )}
-//               />
-//             </View>
-//           </View>
+//           <TextInput
+//             onChangeText={handleCelularChange}
+//             value={celular}
+//             style={styles.input}
+//             placeholder="Número celular"
+//             placeholderTextColor="#999"
+//             keyboardType="phone-pad"
+//             maxLength={15}
+//           />
 
-//           <View>
-//             <TextInput
-//               onChangeText={handleCelularChange}
-//               value={celular}
-//               style={styles.input}
-//               placeholder="Número celular"
-//               placeholderTextColor="#373737"
-//               keyboardType="phone-pad"
-//               maxLength={15}
-//             />
-//           </View>
-
-//           <View>
-//             <TextInput
-//               onChangeText={(text) => setEmail(text.trim().toLowerCase())}
-//               value={email}
-//               style={styles.input}
-//               placeholder="personal@correo.com"
-//               placeholderTextColor="#373737"
-//             />
-//           </View>
-//           <View>
-//             <TextInput
-//               onChangeText={(text) => setPassword(text)}
-//               style={styles.input}
-//               placeholder="Contraseña"
-//               placeholderTextColor="#373737"
-//               secureTextEntry={true}
-//             />
-//           </View>
+//           <TextInput
+//             onChangeText={(text) => setEmail(text.trim().toLowerCase())}
+//             value={email}
+//             style={styles.input}
+//             placeholder="personal@correo.com"
+//             placeholderTextColor="#999"
+//             autoCapitalize="none"
+//             keyboardType="email-address"
+//           />
+          
+//           <TextInput
+//             onChangeText={(text) => setPassword(text)}
+//             style={styles.input}
+//             placeholder="Contraseña"
+//             placeholderTextColor="#999"
+//             secureTextEntry={true}
+//           />
 
 //           <TouchableOpacity
-//             style={[styles.button, { backgroundColor: "#EE6B6B" }]}
+//             style={styles.button}
 //             onPress={handleCreateAccount}
 //             disabled={isLoading}
 //           >
 //             {isLoading ? (
-//               <ActivityIndicator size="large" color="#fff" />
+//               <ActivityIndicator size="small" color="#fff" />
 //             ) : (
-//               <Text
-//                 style={{ fontSize: 17, fontWeight: "400", color: "#ffffff" }}
-//               >
+//               <Text style={styles.buttonText}>
 //                 Crear cuenta
 //               </Text>
 //             )}
@@ -817,119 +359,101 @@
 // const styles = StyleSheet.create({
 //   container: {
 //     flex: 1,
-//     backgroundColor: "#fff",
-//     justifyContent: "start",
-//     backgroundColor: "#000000",
+//     backgroundColor: "#ffffff",
 //   },
-//   image: {
+//   scrollContainer: {
 //     width: "100%",
-//     height: "100%",
-//     resizeMode: "cover",
-//   },
-//   login: {
-//     borderColor: "gray",
-//     borderRadius: 10,
 //     alignItems: "center",
-//     marginBottom: 30,
+//     paddingTop: 20,
+//     paddingBottom: 40,
 //   },
-//   logo: {
-//     width: 100,
-//     height: 100,
-//     borderRadius: 50,
-//     borderColor: "#fff",
-//     borderWidth: 2,
-//     marginVertical: 30,
-//   },
-//   input: {
-//     width: 290,
-//     height: 50,
-//     borderColor: "gray",
-//     borderWidth: 2,
-//     borderWidth: 2,
-//     borderRadius: 10,
+//   backButton: {
+//     position: 'absolute',
+//     top: 50,
+//     left: 20,
+//     zIndex: 10,
 //     padding: 10,
-//     marginVertical: 10,
-//     backgroundColor: "#000000",
-//     marginBottom: 20,
-//     color: "white",
-//     fontSize: 18,
-//   },
-//   button: {
-//     width: 270,
-//     height: 50,
-//     borderRadius: 10,
-//     alignItems: "center",
-//     justifyContent: "center",
-//     marginVertical: 10,
-//     borderColor: "#fff",
-//     borderWidth: 1,
 //   },
 //   iconArrowLeft: {
-//     color: "#ffffff",
-//     marginTop: 30,
-//     marginLeft: 30,
-//     marginBottom: 10,
+//     color: "#000000",
 //   },
-
-
-
-//   // Estilos para el dropdown
-//   containerDropDown: {
-//     backgroundColor: "transparent",
-//     paddingBottom: 10,
-//     width: 290,
+//   formContainer: {
+//     width: "85%",
+//     maxWidth: 400,
+//     marginTop: 30,
+//   },
+//   title: {
+//     fontSize: 24,
+//     fontWeight: "600",
+//     color: "#000000",
+//     marginBottom: 30,
+//     textAlign: "center",
+//   },
+//   input: {
+//     width: "100%",
+//     height: 50,
+//     borderColor: "#e0e0e0",
+//     borderWidth: 1,
+//     borderRadius: 8,
+//     paddingHorizontal: 15,
+//     marginBottom: 15,
+//     backgroundColor: "#ffffff",
+//     color: "#000000",
+//     fontSize: 16,
+//   },
+//   button: {
+//     width: "100%",
+//     height: 50,
+//     borderRadius: 8,
+//     alignItems: "center",
+//     justifyContent: "center",
+//     marginTop: 20,
+//     backgroundColor: "#000000",
+//   },
+//   buttonText: {
+//     fontSize: 16,
+//     fontWeight: "600",
+//     color: "#ffffff",
+//   },
+//   // Dropdown styles
+//   dropdownContainer: {
+//     width: "100%",
+//     marginBottom: 15,
 //   },
 //   dropdown: {
 //     height: 50,
-//     borderColor: "gray",
-//     borderWidth: 2,
-//     borderRadius: 10,
-//     paddingHorizontal: 10,
-//     backgroundColor: "#000000",
-//     marginBottom: 20,
+//     borderColor: "#e0e0e0",
+//     borderWidth: 1,
+//     borderRadius: 8,
+//     paddingHorizontal: 15,
+//     backgroundColor: "#ffffff",
 //   },
-//   iconStyle: {
-//     width: 20,
-//     height: 20,
-//     tintColor: "white",
+//   icon: {
+//     marginRight: 5,
+//   },
+//   placeholderStyle: {
+//     fontSize: 16,
+//     color: '#999',
+//   },
+//   selectedTextStyle: {
+//     fontSize: 16,
+//     color: "#000000",
 //   },
 //   inputSearchStyle: {
 //     height: 40,
 //     fontSize: 16,
 //     backgroundColor: "#ffffff",
 //     color: "#000000",
-//     borderBottomColor: "gray",
+//     borderBottomColor: "#e0e0e0",
 //     borderBottomWidth: 1,
 //   },
-//   placeholderStyle: {
-//     fontSize: 18,
-//     color: '#373737',
-//   },
-//   selectedTextStyle: {
-//     fontSize: 18,
-//     color: "white",
-//   },
-//   icon: {
-//     marginRight: 5,
+//   iconStyle: {
+//     width: 20,
+//     height: 20,
 //   },
 // });
 
 // export default CreateScreen;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -970,53 +494,62 @@ import Toast from 'react-native-toast-message';
 import { Dropdown } from 'react-native-element-dropdown';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
-
 const CreateScreen = ({ navigation }) => {
  
   // STATES
   const [email, setEmail] = useState("");
   const [nombre, setNombre] = useState("");
   const [apellidos, setApellidos] = useState("");
-  const [cedula, setCedula] = useState("");
+  // const [cedula, setCedula] = useState("");
   const [celular, setCelular] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = React.useState(false);
   const [selectedCountry, setSelectedCountry] = useState(null);
-  const [isFocus, setIsFocus] = useState(false);
+
+  const [isFocus1, setIsFocus1] = useState(false);
+  const [isFocus2, setIsFocus2] = useState(false);
+  const [isFocus3, setIsFocus3] = useState(false);
+  const [isFocus4, setIsFocus4] = useState(false);
+
   const [countryCodes, setCountryCodes] = useState([]);
+  // Nuevos estados para los campos adicionales
+  const [idiomaNativo, setIdiomaNativo] = useState("");
+  const [paisOrigen, setPaisOrigen] = useState("");
+  const [idiomaPracticando, setIdiomaPracticando] = useState("");
 
   // CONSTS
   const dispatch = useDispatch();
-  const lowerCaseEmail = email.toLowerCase();
 
-  // Cargar códigos de países al montar el componente
   React.useEffect(() => {
     const fetchCountryCodes = async () => {
       try {
-        const response = await fetch('https://restcountries.com/v3.1/all');
+        // Campos específicos: name (common), idd (root + suffixes), languages
+        const response = await fetch('https://restcountries.com/v3.1/all?fields=name,idd,languages');
         const countries = await response.json();
         
         const formattedCountries = countries
-          .filter(country => country.idd?.root && country.idd?.suffixes)
+          // Filtra países con idd.root y al menos un suffix
+          .filter(country => country.idd?.root && country.idd?.suffixes?.length > 0)
           .map(country => ({
             label: `${country.name.common} (${country.idd.root}${country.idd.suffixes[0]})`,
             value: `${country.idd.root}${country.idd.suffixes[0]}`,
-            countryName: country.name.common
+            countryName: country.name.common,
+            languages: country.languages ? Object.values(country.languages) : []
           }))
           .sort((a, b) => a.countryName.localeCompare(b.countryName));
         
         setCountryCodes(formattedCountries);
       } catch (error) {
         console.error("Error fetching countries:", error);
-        // Datos de respaldo en caso de fallo en la API
+        // Datos de respaldo
         setCountryCodes([
-          { label: "Colombia (+57)", value: "+57", countryName: "Colombia" },
-          { label: "Estados Unidos (+1)", value: "+1", countryName: "United States" },
-          { label: "México (+52)", value: "+52", countryName: "Mexico" },
+          { label: "Colombia (+57)", value: "+57", countryName: "Colombia", languages: ["Spanish"] },
+          { label: "Estados Unidos (+1)", value: "+1", countryName: "United States", languages: ["English"] },
+          { label: "México (+52)", value: "+52", countryName: "Mexico", languages: ["Spanish"] },
         ]);
       }
     };
-
+  
     fetchCountryCodes();
   }, []);
 
@@ -1041,10 +574,10 @@ const CreateScreen = ({ navigation }) => {
   };
 
   // Función para validar y actualizar cédula (solo números)
-  const handleCedulaChange = (text) => {
-    const cleanedText = text.replace(/[^0-9]/g, "");
-    setCedula(cleanedText);
-  };
+  // const handleCedulaChange = (text) => {
+  //   const cleanedText = text.replace(/[^0-9]/g, "");
+  //   setCedula(cleanedText);
+  // };
 
   // Función para validar y actualizar celular (solo números)
   const handleCelularChange = (text) => {
@@ -1066,10 +599,17 @@ const CreateScreen = ({ navigation }) => {
     }
   };
 
-
   // CREATE STRIPE CUSTOMER
   const handleSubmit = async ({ name, email, userCredential }) => {
     try {
+      // Validar que los nuevos campos no estén vacíos
+      if (!idiomaNativo || !paisOrigen || !idiomaPracticando) {
+        showErrorToast("Todos los campos de idiomas y país de origen son obligatorios");
+        setIsLoading(false);
+        await initialAuth.currentUser?.delete();
+        return;
+      }
+
       const response = await fetch(
         "https://app-zrcl5qd7da-uc.a.run.app/api/createstripecustomer",
         {
@@ -1090,7 +630,7 @@ const CreateScreen = ({ navigation }) => {
           name: nombre,
           surname: apellidos,
           country: selectedCountryData?.countryName || "Colombia",
-          nit: cedula,
+          // nit: cedula,
           cellPhone: celular,
           stripeCustomerId: customer.id,
           destinationAddress: "",
@@ -1098,7 +638,11 @@ const CreateScreen = ({ navigation }) => {
           locationName: "",
           departamento: "",
           prefix: selectedCountry || "+057",
-          nitType: "CC", 
+          nitType: "CC",
+          // Nuevos campos agregados
+          nativeLanguage: idiomaNativo,
+          originCountry: paisOrigen,
+          practicingLanguage: idiomaPracticando
         };
         const uid = userCredential.user.uid;
         await storeData(uid, userData);
@@ -1136,6 +680,12 @@ const CreateScreen = ({ navigation }) => {
 
   // CREATE ACCOUNT
   const handleCreateAccount = async () => {
+    // Validación de campos obligatorios
+    if (!idiomaNativo || !paisOrigen || !idiomaPracticando) {
+      showErrorToast("Todos los campos de idiomas y país de origen son obligatorios");
+      return;
+    }
+
     try {
       const userCredential = await createUserWithEmailAndPassword(
         initialAuth,
@@ -1182,127 +732,264 @@ const CreateScreen = ({ navigation }) => {
     }
   };
 
+  // Obtener lista de idiomas únicos de todos los países
+  const getAllLanguages = () => {
+    const languages = new Set();
+    countryCodes.forEach(country => {
+      if (country.languages && country.languages.length > 0) {
+        country.languages.forEach(lang => languages.add(lang));
+      }
+    });
+    return Array.from(languages).sort().map(lang => ({ label: lang, value: lang }));
+  };
+
+  // Obtener lista de países para el selector de país de origen
+  const getCountriesList = () => {
+    return countryCodes.map(country => ({
+      label: country.countryName,
+      value: country.countryName
+    }));
+  };
+
+  const languagesList = getAllLanguages();
+  const countriesList = getCountriesList();
+
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#000000" />
+      <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
 
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <FontAwesomeIcon icon={faX} size={25} style={styles.iconArrowLeft} />
+      <TouchableOpacity 
+        onPress={() => navigation.goBack()}
+        style={styles.backButton}
+      >
+        <FontAwesomeIcon icon={faX} size={20} style={styles.iconArrowLeft} />
       </TouchableOpacity>
 
       <ScrollView
-        contentContainerStyle={{
-          width: "100%",
-          alignItems: "center",
-          justifyContent: "start",
-          marginTop: 10,
-        }}
+        contentContainerStyle={styles.scrollContainer}
+        keyboardShouldPersistTaps="handled"
       >
-        <View style={styles.login}>
-          <View>
-            <TextInput
-              onChangeText={(text) => setNombre(text.trim())}
-              style={styles.input}
-              placeholder="Nombre"
-              placeholderTextColor="#373737"
-            />
-          </View>
-          <View>
-            <TextInput
-              onChangeText={(text) => setApellidos(text.trim())}
-              style={styles.input}
-              placeholder="Apellidos"
-              placeholderTextColor="#373737"
-            />
-          </View>
-          <View>
-            <TextInput
-              onChangeText={handleCedulaChange} 
-              value={cedula}
-              style={styles.input}
-              placeholder="Cédula"
-              placeholderTextColor="#373737"
-              keyboardType="numeric"
-              maxLength={10}
-            />
-          </View>
-          
-          <View>
-            <View style={styles.containerDropDown}>
-              <Dropdown
-                style={[styles.dropdown, isFocus && { borderColor: "gray" }]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                inputSearchStyle={styles.inputSearchStyle}
-                iconStyle={styles.iconStyle}
-                data={countryCodes}
-                search
-                maxHeight={250}
-                labelField="label"
-                valueField="value"
-                placeholder={!isFocus ? "Selecciona tu codigo" : "..."}
-                searchPlaceholder="Buscar país..."
-                value={selectedCountry}
-                onFocus={() => setIsFocus(true)}
-                onBlur={() => setIsFocus(false)}
-                onChange={(item) => {
-                  setSelectedCountry(item.value);
-                  setIsFocus(false);
-                }}
-                renderLeftIcon={() => (
-                  <AntDesign
-                    style={styles.icon}
-                    color={isFocus ? "gray" : "white"}
-                    name="earth"
-                    size={20}
-                  />
-                )}
-              />
-            </View>
-          </View>
-          
-          <View>
-            <TextInput
-              onChangeText={handleCelularChange}
-              value={celular}
-              style={styles.input}
-              placeholder="Número celular"
-              placeholderTextColor="#373737"
-              keyboardType="phone-pad"
-              maxLength={15}
+        <View style={styles.formContainer}>
+          <Text style={styles.title}>Crear cuenta</Text>
+
+
+
+               {/* Nuevos campos agregados */}
+               <View style={styles.dropdownContainer}>
+            <Dropdown
+              style={[styles.dropdown, isFocus2 && { borderColor: "#000" }]}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              inputSearchStyle={styles.inputSearchStyle}
+              iconStyle={styles.iconStyle}
+              data={languagesList}
+              search
+              maxHeight={250}
+              labelField="label"
+              valueField="value"
+              placeholder="Idioma nativo"
+              searchPlaceholder="Buscar idioma..."
+              value={idiomaNativo}
+              onFocus={() => setIsFocus2(true)}
+              onBlur={() => setIsFocus2(false)}
+              onChange={(item) => {
+                setIdiomaNativo(item.value);
+                setIsFocus2(false);
+              }}
+              renderLeftIcon={() => (
+                <AntDesign
+                  style={styles.icon}
+                  color={isFocus2 ? "#000" : "#999"}
+                  name="message1"
+                  size={20}
+                />
+              )}
             />
           </View>
 
-          <View>
-            <TextInput
-              onChangeText={(text) => setEmail(text.trim().toLowerCase())}
-              value={email}
-              style={styles.input}
-              placeholder="personal@correo.com"
-              placeholderTextColor="#373737"
+
+
+          <View style={styles.dropdownContainer}>
+            <Dropdown
+              style={[styles.dropdown, isFocus4 && { borderColor: "#000" }]}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              inputSearchStyle={styles.inputSearchStyle}
+              iconStyle={styles.iconStyle}
+              data={languagesList}
+              search
+              maxHeight={250}
+              labelField="label"
+              valueField="value"
+              placeholder="Idioma que practica"
+              searchPlaceholder="Buscar idioma..."
+              value={idiomaPracticando}
+              onFocus={() => setIsFocus4(true)}
+              onBlur={() => setIsFocus4(false)}
+              onChange={(item) => {
+                setIdiomaPracticando(item.value);
+                setIsFocus4(false);
+              }}
+              renderLeftIcon={() => (
+                <AntDesign
+                  style={styles.icon}
+                  color={isFocus4 ? "#000" : "#999"}
+                  name="message1"
+                  size={20}
+                />
+              )}
             />
           </View>
-          <View>
-            <TextInput
-              onChangeText={(text) => setPassword(text)}
-              style={styles.input}
-              placeholder="Contraseña"
-              placeholderTextColor="#373737"
-              secureTextEntry={true}
+          
+          <TextInput
+            onChangeText={(text) => setNombre(text.trim())}
+            style={styles.input}
+            placeholder="Nombre"
+            placeholderTextColor="#999"
+          />
+
+
+
+
+
+
+
+
+
+          
+          
+          <TextInput
+            onChangeText={(text) => setApellidos(text.trim())}
+            style={styles.input}
+            placeholder="Apellidos"
+            placeholderTextColor="#999"
+          />
+
+
+
+
+
+
+
+               <View style={styles.dropdownContainer}>
+            <Dropdown
+              style={[styles.dropdown, isFocus1 && { borderColor: "#000" }]}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              inputSearchStyle={styles.inputSearchStyle}
+              iconStyle={styles.iconStyle}
+              data={countryCodes}
+              search
+              maxHeight={250}
+              labelField="label"
+              valueField="value"
+              placeholder="Selecciona tu código"
+              searchPlaceholder="Buscar país..."
+              value={selectedCountry}
+              onFocus={() => setIsFocus1(true)}
+              onBlur={() => setIsFocus1(false)}
+              onChange={(item) => {
+                setSelectedCountry(item.value);
+                setIsFocus1(false);
+              }}
+              renderLeftIcon={() => (
+                <AntDesign
+                  style={styles.icon}
+                  color={isFocus1 ? "#000" : "#999"}
+                  name="earth"
+                  size={20}
+                />
+              )}
             />
           </View>
+          
+          <TextInput
+            onChangeText={handleCelularChange}
+            value={celular}
+            style={styles.input}
+            placeholder="Número celular"
+            placeholderTextColor="#999"
+            keyboardType="phone-pad"
+            maxLength={15}
+          />
+          
+          {/* <TextInput
+            onChangeText={handleCedulaChange} 
+            value={cedula}
+            style={styles.input}
+            placeholder="Cédula"
+            placeholderTextColor="#999"
+            keyboardType="numeric"
+            maxLength={10}
+          /> */}
+
+          <View style={styles.dropdownContainer}>
+            <Dropdown
+              style={[styles.dropdown, isFocus3 && { borderColor: "#000" }]}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              inputSearchStyle={styles.inputSearchStyle}
+              iconStyle={styles.iconStyle}
+              data={countriesList}
+              search
+              maxHeight={250}
+              labelField="label"
+              valueField="value"
+              placeholder="País de origen"
+              searchPlaceholder="Buscar país..."
+              value={paisOrigen}
+              onFocus={() => setIsFocus3(true)}
+              onBlur={() => setIsFocus3(false)}
+              onChange={(item) => {
+                setPaisOrigen(item.value);
+                setIsFocus3(false);
+              }}
+              renderLeftIcon={() => (
+                <AntDesign
+                  style={styles.icon}
+                  color={isFocus3 ? "#000" : "#999"}
+                  name="enviromento"
+                  size={20}
+                />
+              )}
+            />
+          </View>
+          
+     
+
+          <TextInput
+            onChangeText={(text) => setEmail(text.trim().toLowerCase())}
+            value={email}
+            style={styles.input}
+            placeholder="personal@correo.com"
+            placeholderTextColor="#999"
+            autoCapitalize="none"
+            keyboardType="email-address"
+          />
+          
+          <TextInput
+            onChangeText={(text) => setPassword(text)}
+            style={styles.input}
+            placeholder="Contraseña"
+            placeholderTextColor="#999"
+            secureTextEntry={true}
+          />
+
+     
+
+       
+
+       
 
           <TouchableOpacity
-            style={[styles.button, { backgroundColor: "#EE6B6B" }]}
+            style={styles.button}
             onPress={handleCreateAccount}
             disabled={isLoading}
           >
             {isLoading ? (
-              <ActivityIndicator size="large" color="#fff" />
+              <ActivityIndicator size="small" color="#fff" />
             ) : (
-              <Text
-                style={{ fontSize: 17, fontWeight: "400", color: "#ffffff" }}
-              >
+              <Text style={styles.buttonText}>
                 Crear cuenta
               </Text>
             )}
@@ -1314,101 +1001,101 @@ const CreateScreen = ({ navigation }) => {
   );
 };
 
-// STYLES
+// STYLES (se mantienen igual)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    justifyContent: "start",
-    backgroundColor: "#000000",
+    backgroundColor: "#ffffff",
   },
-  image: {
+  scrollContainer: {
     width: "100%",
-    height: "100%",
-    resizeMode: "cover",
-  },
-  login: {
-    borderColor: "gray",
-    borderRadius: 10,
     alignItems: "center",
-    marginBottom: 30,
+    paddingTop: 20,
+    paddingBottom: 40,
   },
-  logo: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    borderColor: "#fff",
-    borderWidth: 2,
-    marginVertical: 30,
-  },
-  input: {
-    width: 290,
-    height: 50,
-    borderColor: "gray",
-    borderWidth: 2,
-    borderWidth: 2,
-    borderRadius: 10,
+  backButton: {
+    position: 'absolute',
+    top: 50,
+    left: 20,
+    zIndex: 10,
     padding: 10,
-    marginVertical: 10,
-    backgroundColor: "#000000",
-    marginBottom: 20,
-    color: "white",
-    fontSize: 18,
-  },
-  button: {
-    width: 270,
-    height: 50,
-    borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    marginVertical: 10,
-    borderColor: "#fff",
-    borderWidth: 1,
   },
   iconArrowLeft: {
-    color: "#ffffff",
-    marginTop: 30,
-    marginLeft: 30,
-    marginBottom: 10,
+    color: "#000000",
   },
-  // Estilos para el dropdown
-  containerDropDown: {
-    backgroundColor: "transparent",
-    paddingBottom: 10,
-    width: 290,
+  formContainer: {
+    width: "85%",
+    maxWidth: 400,
+    marginTop: 30,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "600",
+    color: "#000000",
+    marginBottom: 30,
+    textAlign: "center",
+  },
+  input: {
+    width: "100%",
+    height: 50,
+    borderColor: "#e0e0e0",
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    marginBottom: 15,
+    backgroundColor: "#ffffff",
+    color: "#000000",
+    fontSize: 16,
+  },
+  button: {
+    width: "100%",
+    height: 50,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 20,
+    backgroundColor: "#000000",
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#ffffff",
+  },
+  // Dropdown styles
+  dropdownContainer: {
+    width: "100%",
+    marginBottom: 15,
   },
   dropdown: {
     height: 50,
-    borderColor: "gray",
-    borderWidth: 2,
-    borderRadius: 10,
-    paddingHorizontal: 10,
-    backgroundColor: "#000000",
-    marginBottom: 20,
+    borderColor: "#e0e0e0",
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    backgroundColor: "#ffffff",
   },
-  iconStyle: {
-    width: 20,
-    height: 20,
-    tintColor: "white",
+  icon: {
+    marginRight: 5,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+    color: '#999',
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+    color: "#000000",
   },
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
     backgroundColor: "#ffffff",
     color: "#000000",
-    borderBottomColor: "gray",
+    borderBottomColor: "#e0e0e0",
     borderBottomWidth: 1,
   },
-  placeholderStyle: {
-    fontSize: 18,
-    color: '#373737',
-  },
-  selectedTextStyle: {
-    fontSize: 18,
-    color: "white",
-  },
-  icon: {
-    marginRight: 5,
+  iconStyle: {
+    width: 20,
+    height: 20,
   },
 });
 

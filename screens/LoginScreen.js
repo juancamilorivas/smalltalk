@@ -21,7 +21,6 @@ import { fetchPersonalData } from "../apiServices";
 import logo from "../assets/logo.png";
 import { StatusBar } from "react-native";
 
-
 const LoginScreen = ({ navigation }) => {
   //STATES
   const [email, setEmail] = useState("");
@@ -119,71 +118,60 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-                  <StatusBar barStyle="light-content" backgroundColor="#000000" />
+      <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
 
       <ScrollView
-        contentContainerStyle={{
-          flex: 1,
-          width: "100%",
-          height: "100%",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
+        contentContainerStyle={styles.scrollContainer}
+        keyboardShouldPersistTaps="handled"
       >
-        <View style={styles.login}>
-          <Image source={logo} style={styles.logo} resizeMode="contain" />
-          <View>
-            <Text style={{ fontSize: 17, fontWeight: "400", color: "#ffffff" }}>
-              E-mail
-            </Text>
+        <View style={styles.loginContainer}>
+   
+          <Text style={styles.title}>SmallTalk</Text>
+          
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Correo electrónico</Text>
             <TextInput
               onChangeText={(text) => setEmail(text.trim().toLowerCase())}
               style={styles.input}
               value={email}
               placeholder="personal@mail.com"
-              placeholderTextColor="#373737"
+              placeholderTextColor="#999"
+              autoCapitalize="none"
+              keyboardType="email-address"
             />
           </View>
-          <View>
-            <Text style={{ fontSize: 17, fontWeight: "400", color: "white" }}>
-              Password
-            </Text>
+          
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Contraseña</Text>
             <TextInput
               onChangeText={(text) => setPassword(text)}
               style={styles.input}
-              placeholder="Password"
-              placeholderTextColor="#373737"
+              placeholder="Contraseña"
+              placeholderTextColor="#999"
               secureTextEntry={true}
             />
           </View>
 
           <TouchableOpacity
-            style={[styles.button, { backgroundColor: "#8c52ff" }]}
-            // style={[styles.button, { backgroundColor: "#3A48F2" }]}
+            style={styles.button}
             onPress={handleSignIn}
             disabled={isLoading}
           >
             {isLoading ? (
-              <ActivityIndicator size="large" color="#fff" />
+              <ActivityIndicator size="small" color="#fff" />
             ) : (
-              <Text style={{ fontSize: 17, fontWeight: "400", color: "white" }}>
-                Iniciar sesion
+              <Text style={styles.buttonText}>
+                Iniciar sesión
               </Text>
             )}
           </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => navigation.navigate("CreateAccountScreen")}
+            style={styles.secondaryButton}
           >
-            <Text
-              style={{
-                fontSize: 17,
-                fontWeight: "400",
-                color: "white",
-                paddingTop: 30,
-              }}
-            >
-              Crear cuenta
+            <Text style={styles.secondaryButtonText}>
+              Crear cuenta nueva
             </Text>
           </TouchableOpacity>
         </View>
@@ -196,48 +184,74 @@ const LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
+    backgroundColor: "#ffffff",
+  },
+  scrollContainer: {
+    flexGrow: 1,
     justifyContent: "center",
-    backgroundColor: "#000000",
   },
-  image: {
-    width: "100%",
-    height: "100%",
-    resizeMode: "cover",
+  loginContainer: {
+    width: "85%",
+    maxWidth: 400,
+    alignSelf: "center",
+    paddingVertical: 40,
   },
-  login: {
-    width: 350,
-    height: 500,
-    borderColor: "#fff",
-    borderRadius: 10,
-    paddingh: 10,
-    alignItems: "center",
+  title: {
+    fontSize: 34,
+    fontWeight: "600",
+    color: "#000000",
+    marginBottom: 30,
+    textAlign: "center",
   },
   logo: {
-    width: 200,
-    height: 200,
+    width: 150,
+    height: 150,
+    alignSelf: "center",
+    marginBottom: 30,
   },
-  input: {
-    width: 250,
-    height: 40,
-    borderColor: "#fff",
-    borderWidth: 2,
-    borderWidth: 2,
-    borderRadius: 10,
-    padding: 10,
-    marginVertical: 10,
-    backgroundColor: "#ffffff90",
+  inputContainer: {
     marginBottom: 20,
   },
+  label: {
+    fontSize: 16,
+    fontWeight: "500",
+    color: "#000000",
+    marginBottom: 8,
+  },
+  input: {
+    width: "100%",
+    height: 50,
+    borderColor: "#e0e0e0",
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    backgroundColor: "#ffffff",
+    color: "#000000",
+    fontSize: 16,
+  },
   button: {
-    width: 250,
-    height: 40,
-    borderRadius: 10,
+    width: "100%",
+    height: 50,
+    borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
-    marginVertical: 10,
-    borderColor: "#fff",
-    borderWidth: 1,
+    marginTop: 20,
+    backgroundColor: "#000000",
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#ffffff",
+  },
+  secondaryButton: {
+    marginTop: 25,
+    alignSelf: "center",
+  },
+  secondaryButtonText: {
+    fontSize: 15,
+    fontWeight: "500",
+    color: "#000000",
+    textDecorationLine: "underline",
   },
 });
 
