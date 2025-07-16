@@ -1,10 +1,14 @@
 import React from "react";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import ProfileScreen from "../screens/ProfileScreen";
+import OptionsScreen from "../screens/OptionsScreen";
 import TutorConfigScreen from "../screens/TutorConfigScreen";
 import BecomeTutorScreen from "../screens/BecomeTutorScreen";
 import DebitCardTutorScreen from "../screens/DebitCardTutorScreen";
+import ProfileScreen from "../screens/ProfileScreen";
+import { TouchableOpacity } from "react-native";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons/faChevronLeft";
 
 
 
@@ -17,7 +21,7 @@ const ProfileNavigation = ({ navigation }) => {
 
       <Stack.Screen
         name="Option"
-        component={ProfileScreen}
+        component={OptionsScreen}
         options={{
           title: "Options",
           headerShown: true,
@@ -47,7 +51,20 @@ const ProfileNavigation = ({ navigation }) => {
             fontWeight: "bold",
           },
           headerTitleAlign: "center",
+
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Option");
+              }}
+            >
+              <FontAwesomeIcon icon={faChevronLeft} size={25} color="#ffffff" />
+            </TouchableOpacity>
+          ),
         }}
+
+
+
       />
 
 
@@ -84,6 +101,36 @@ const ProfileNavigation = ({ navigation }) => {
             fontWeight: "bold",
           },
           headerTitleAlign: "center",
+        }}
+      />
+
+
+
+
+        <Stack.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          title: "Profile",
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: "#000000",
+          },
+          headerTintColor: "#ffffff",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+          headerTitleAlign: "center",
+
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Option");
+              }}
+            >
+              <FontAwesomeIcon icon={faChevronLeft} size={25} color="#ffffff" />
+            </TouchableOpacity>
+          ),
         }}
       />
 

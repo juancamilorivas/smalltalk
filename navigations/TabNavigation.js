@@ -5,12 +5,17 @@ import { faBolt } from "@fortawesome/free-solid-svg-icons/faBolt";
 import { faBars } from "@fortawesome/free-solid-svg-icons/faBars";
 import { faComment } from "@fortawesome/free-solid-svg-icons/faComment";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
-
+import { faEye } from "@fortawesome/free-solid-svg-icons/faEye";
+import { faUserGroup } from "@fortawesome/free-solid-svg-icons/faUserGroup";
+import { faLocationDot } from "@fortawesome/free-solid-svg-icons/faLocationDot";
+import { faFire } from "@fortawesome/free-solid-svg-icons/faFire";
+import { faRocket } from "@fortawesome/free-solid-svg-icons/faRocket";
 import { useSafeAreaInsets } from "react-native-safe-area-context"; 
-import ProfileNavigation from "./ProfileNavigation";
-import ServicesNavigation from "./ServicesNavigation";
+import OptionsNavigation from "./OptionsNavigation";
+import TutorsNavigation from "./TutorsNavigation";
+import DiscoverNavigation from "./DiscoverNavigation";
 import ServiceHistoryNavigation from "./ServiceHistoryNavigation";
-import ChatNavigation from "./ChatNavigation";
+import ChatsNavigation from "./ChatsNavigation";
 
 const Tab = createBottomTabNavigator();
 
@@ -29,10 +34,12 @@ const TabNavigation = () => {
         },
         tabBarIcon: ({ focused, color }) => {
           let icon;
-          if (route.name === "Search") {
+          if (route.name === "Tutors") {
             icon = (
-              <FontAwesomeIcon icon={faUser} size={30} color={color} />
+              <FontAwesomeIcon icon={faLocationDot} size={30} color={color} />
             );
+          } else if (route.name === "Discover") {
+            icon = <FontAwesomeIcon icon={faRocket} size={30} color={color} />;
           } else if (route.name === "Services") {
             icon = <FontAwesomeIcon icon={faBolt} size={30} color={color} />;
           } else if (route.name === "Options") {
@@ -48,8 +55,8 @@ const TabNavigation = () => {
       })}
     >
       <Tab.Screen
-        name="Search"
-        component={ServicesNavigation}
+        name="Tutors"
+        component={TutorsNavigation}
         options={{
           headerShown: false,
           tabBarHideOnKeyboard: true,
@@ -57,9 +64,20 @@ const TabNavigation = () => {
       />
 
 
-<Tab.Screen
+     <Tab.Screen
+        name="Discover"
+        component={DiscoverNavigation}
+        options={{
+          headerShown: false,
+          tabBarHideOnKeyboard: true,
+        }}
+      />
+
+
+
+      <Tab.Screen
         name="Chats"
-        component={ChatNavigation}
+        component={ChatsNavigation}
         options={{
           headerShown: false,
           tabBarHideOnKeyboard: true,
@@ -78,7 +96,7 @@ const TabNavigation = () => {
 
       <Tab.Screen
         name="Options"
-        component={ProfileNavigation}
+        component={OptionsNavigation}
         options={{
           headerShown: false,
           tabBarHideOnKeyboard: true,

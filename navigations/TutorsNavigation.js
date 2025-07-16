@@ -1,24 +1,21 @@
 import React from "react";
-
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import ChatsScreen from "../screens/ChatsScreen";
-import ChatScreen from "../screens/ChatScreen";
-
-
+import TutorsScreen from "../screens/TutorsScreen";
+import UsersToChatScreen from "../screens/UsersToChatScreen";
+import UserProfileScreen from "../screens/UserProfileScreen";
 
 const Stack = createNativeStackNavigator();
 
-const ChatNavigation = ({ navigation }) => {
+const ServicesNavigation = ({ navigation }) => {
 
   return (
     <Stack.Navigator>
-
       <Stack.Screen
-        name="ChatsScreen"
-        component={ChatsScreen}
+        name="TutorsScreen"
+        component={TutorsScreen}
         options={{
-          title: "Chats",
-          headerShown: true,
+          title: "Bodega",
+          headerShown: false,
           headerStyle: {
             backgroundColor: "#000000",
           },
@@ -26,18 +23,20 @@ const ChatNavigation = ({ navigation }) => {
           headerTitleStyle: {
             fontWeight: "bold",
           },
-          headerTitleAlign: "center",
         }}
       />
 
 
+   
 
-<Stack.Screen
-        name="Chat"
-        component={ChatScreen}
+
+
+       <Stack.Screen
+        name="UserProfile"
+        component={UserProfileScreen}
         options={{
-          title: "Chat",
-          headerShown: true,
+          title: "Bodega",
+          headerShown: false,
           headerStyle: {
             backgroundColor: "#000000",
           },
@@ -45,13 +44,15 @@ const ChatNavigation = ({ navigation }) => {
           headerTitleStyle: {
             fontWeight: "bold",
           },
-          headerTitleAlign: "center",
         }}
       />
+
+
+
 
 
     </Stack.Navigator>
   );
 };
 
-export default ChatNavigation;
+export default ServicesNavigation;
